@@ -1,1 +1,1 @@
-# alita_ai
+# alita_digitalassistant
