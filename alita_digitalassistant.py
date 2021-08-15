@@ -6,6 +6,8 @@
 # Importing libraries
 import pyttsx3 as tts
 import speech_recognition as sr
+import datetime
+import random
 
 class AlitaTextToSpeech:
     def __init__(self, speed = 190, voice = "Female"):
@@ -79,7 +81,79 @@ class AlitaSpeechRecog(AlitaTextToSpeech):
             query = 'none'
         return query
 
+class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
+    
+    def greetings(self):
+        super().__init__(voice = self.voice)
+        current_hour = datetime.datetime.now()
+        morning = [ i for i in range(0,12) ]
+        if current_hour.hour in morning:
+            print("AI Response: Good Morning !!")
+            self.communicate("Good Morning !!")
+        elif current_hour.hour > 15:
+            print("AI Response: Good Evening !!")
+            self.communicate("Good Evening !!")
+        else:
+            print("AI Response: Good Afternoon !!")
+            self.communicate("Good Afternoon !!")
+        print("AI Response: How can I help you ?")
+        self.communicate("How can I help you ?")
+    
+    def introduction(self):
+        super().__init__(voice = self.voice)
+        print(f"AI Response: Hi, I'm Alita. Your digital personal assistant.")
+        self.communicate("Hi, I'm Alita. Your digital personal assistant.")
+
+    def general_inquiry(self):
+        super().__init__(voice = self.voice)
+        replies = ["Somewhere between better and best.", "Oh, terrible, thank you so much!", "You go first. Then, we can compare.", "It's a secret.", "I'm doing great, how about you?"]
+        response = random.choice(replies)
+        print(f"AI Response: {response}")
+        self.communicate(response)
+    
+    def fun_love(self):
+        super().__init__(voice = self.voice)
+        replies = ["I love ME too!", "Well, who doesn't?", "I get that a lot!", "You are day-dreaming again!", "Are you sure you aren’t sick or something?", "Yeah, thanks. I love myself too.", "Oh really, that's so funny.", "I sure wish the person who created me had given me the ability to understand this human emotion-love"]
+        response = random.choice(replies)
+        print(f"AI Response: {response}")
+        self.communicate(response)
+
 if __name__ == "__main__":
-    ai_obj = AlitaSpeechRecog()
-    command = ai_obj.recognition().lower()
-    print(command)
+    ai_obj = AlitaActions()
+    ai_obj.greetings()
+    while True:
+        command = ai_obj.recognition().lower()
+        try:
+            calc = eval(command)
+            print(f"AI Response: {command} is {calc}")
+            ai_obj.communicate(f"{command} is {calc}")
+            continue
+        except:
+            pass
+        if 'hi' in command or 'hello' in command:
+            print(f"AI Response: Hi there.")
+            ai_obj.communicate("Hi there.")
+            continue
+        if 'your name' in command:
+            print(f"AI Response: My name is Alita.")
+            ai_obj.communicate("My name is Alita.")
+            continue
+        elif 'introduce yourself' in command or 'who are you' in command or 'about yourself' in command:
+            ai_obj.introduction()
+            continue
+        elif 'how are you' in command or 'about you' in command or 'you doing' in command:
+            ai_obj.general_inquiry()
+            continue
+        elif 'i love you' in command:
+            ai_obj.fun_love()
+            continue
+        elif 'none' in command:
+            continue
+        elif '**' in command:
+            print("AI Response: Avoid using inappropriate words.")
+            ai_obj.communicate("Avoid using inappropriate words.")
+            continue
+        else:
+            print("AI Response: Still learning, not able to answer the query")
+            ai_obj.communicate("Still learning, not able to answer the query")
+            continue
