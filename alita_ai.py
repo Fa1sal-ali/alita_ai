@@ -1,11 +1,11 @@
 # Author: Faisal Ali
 # Creation Date: 7th Aug 2021
-# Version: 0.0.1
-# Revision Date: NA
+# Version: 0.0.2
+# Revision Date: 15th Aug 2021
 
 # Importing libraries
 import pyttsx3 as tts
-
+import speech_recognition as sr
 
 class AlitaTextToSpeech:
     def __init__(self, speed = 190, voice = "Female"):
@@ -52,6 +52,34 @@ class AlitaTextToSpeech:
         self.engine.say(self.content)
         self.engine.runAndWait()
 
+class AlitaSpeechRecog(AlitaTextToSpeech):
+    """
+    Taked the voice input from the microphone and returns the recognized words
+    
+    Return:
+    query(string): Recognized voice
+    """
+
+    def recognition(self):
+        super().__init__(voice = self.voice)
+        rcg = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Detecting any user input")
+            rcg.pause_threshold = 1
+            audio = rcg.listen(source)
+        
+        try:
+            print("Analyzing the user input")
+            query = rcg.recognize_google(audio, language="en-IN")
+            print(f"User Command: {query}")
+        except Exception as error:
+            print(error)
+            print("AI Response: Unable to Recognize user input")
+            self.communicate("Unable to Recognize user input")
+            query = 'none'
+        return query
+
 if __name__ == "__main__":
-    ai_obj = AlitaTextToSpeech()
-    ai_obj.communicate("This is our first test run")
+    ai_obj = AlitaSpeechRecog()
+    command = ai_obj.recognition().lower()
+    print(command)
