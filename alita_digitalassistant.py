@@ -6,7 +6,7 @@
 # Importing libraries
 import pyttsx3 as tts
 import speech_recognition as sr
-import datetime
+from datetime import datetime
 import random
 import logging
 
@@ -91,7 +91,7 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
     """
     def greetings(self):
         super().__init__(voice = self.voice)
-        current_hour = datetime.datetime.now()
+        current_hour = datetime.now()
         morning = [ i for i in range(0,12) ]
         if current_hour.hour in morning:
             logger.info("AI Response: Good Morning !!")
@@ -124,6 +124,21 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
         logger.info(f"AI Response: {response}")
         self.communicate(response)
 
+    def cal_info(self, option):
+        super().__init__(voice = self.voice)
+        x = datetime.now()
+        cal_dic = {'hour': x.strftime("%I"), 'minute':x.strftime("%M"), 'time_of_day':x.strftime("%p"), 'day':x.strftime("%A"),'month': x.strftime("%B"), 'year':x.year}
+        if option == 'time':
+            response = f"It's {cal_dic['hour']}:{cal_dic['minute']} {cal_dic['time_of_day']}"
+        elif option == 'day':
+            response = f"Today is {cal_dic['day']}."
+        elif option == 'month':
+            response = f"The month is {cal_dic['month']}."
+        elif option == 'year':
+            response = f"The year is {cal_dic['year']}."
+        logger.info(f"AI Response: {response}")
+        self.communicate(response)
+
 if __name__ == "__main__":
     #Setting up logging
     home_dir = "C:/Users/fa1za/Documents/CODE/PYTHON/alita_digitalassistant/"
@@ -150,11 +165,11 @@ if __name__ == "__main__":
             continue
         except:
             pass
-        if 'hi' in command or 'hello' in command:
+        if 'hello' in command:
             logger.info(f"AI Response: Hi there.")
             ai_obj.communicate("Hi there.")
             continue
-        if 'your name' in command:
+        elif 'your name' in command:
             logger.info(f"AI Response: My name is Alita.")
             ai_obj.communicate("My name is Alita.")
             continue
@@ -166,6 +181,18 @@ if __name__ == "__main__":
             continue
         elif 'i love you' in command:
             ai_obj.fun_love()
+            continue
+        elif 'time' in command:
+            ai_obj.cal_info(option='time')
+            continue
+        elif 'day' in command:
+            ai_obj.cal_info(option='day')
+            continue
+        elif 'month' in command:
+            ai_obj.cal_info(option='month')
+            continue
+        elif 'year' in command:
+            ai_obj.cal_info(option='year')
             continue
         elif 'none' in command:
             continue

@@ -8,11 +8,11 @@ A simple implementation of a digital assistant based on Python with which you ca
 
 # Version
 
-0.0.5
+0.0.6
 
 # Revision Date
 
-20th Aug 2021
+29th Aug 2021
 
 # Dependencies
 
@@ -30,3 +30,4 @@ A simple implementation of a digital assistant based on Python with which you ca
     4. Ask how is the bot feeling "How are you/How are you doing".
     5. Express your love to the bot to get a funny response "I love you".
     6. Ask some simple maths questions.
+    7. Ask the time, day, month or year
