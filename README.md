@@ -8,15 +8,19 @@ A simple implementation of a digital assistant based on Python with which you ca
 
 # Version
 
-0.0.6
+0.0.7
 
 # Revision Date
 
-29th Aug 2021
+4th Sep 2021
 
 # Dependencies
 
+* comtypes==1.1.10
+* PyAudio ==0.2.11
+* pypiwin32==223
 * pyttsx3==2.90
+* pywin32==301
 * SpeechRecognition==3.8.1
 
 # Features
@@ -31,3 +35,4 @@ A simple implementation of a digital assistant based on Python with which you ca
     5. Express your love to the bot to get a funny response "I love you".
     6. Ask some simple maths questions.
     7. Ask the time, day, month or year
+    8. Open websites like Google, Gmail, Youtube, Amazon, Netflix 

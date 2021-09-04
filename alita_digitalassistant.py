@@ -1,7 +1,7 @@
 # Author: Faisal Ali
 # Creation Date: 7th Aug 2021
-# Version: 0.0.4
-# Revision Date: 15th Aug 2021
+# Version: 0.0.7
+# Revision Date: 4th Sep 2021
 
 # Importing libraries
 import pyttsx3 as tts
@@ -9,6 +9,7 @@ import speech_recognition as sr
 from datetime import datetime
 import random
 import logging
+import webbrowser as wb
 
 class AlitaTextToSpeech:
     def __init__(self, speed = 190, voice = "Female"):
@@ -90,7 +91,6 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
     Voice Output
     """
     def greetings(self):
-        super().__init__(voice = self.voice)
         current_hour = datetime.now()
         morning = [ i for i in range(0,12) ]
         if current_hour.hour in morning:
@@ -106,26 +106,22 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
         self.communicate("How can I help you ?")
     
     def introduction(self):
-        super().__init__(voice = self.voice)
         logger.info(f"AI Response: Hi, I'm Alita. Your digital personal assistant.")
         self.communicate("Hi, I'm Alita. Your digital personal assistant.")
 
     def general_inquiry(self):
-        super().__init__(voice = self.voice)
         replies = ["Somewhere between better and best.", "Oh, terrible, thank you so much!", "You go first. Then, we can compare.", "It's a secret.", "I'm doing great, how about you?"]
         response = random.choice(replies)
         logger.info(f"AI Response: {response}")
         self.communicate(response)
     
     def fun_love(self):
-        super().__init__(voice = self.voice)
         replies = ["I love ME too!", "Well, who doesn't?", "I get that a lot!", "You are day-dreaming again!", "Are you sure you aren’t sick or something?", "Yeah, thanks. I love myself too.", "Oh really, that's so funny.", "I sure wish the person who created me had given me the ability to understand this human emotion-love"]
         response = random.choice(replies)
         logger.info(f"AI Response: {response}")
         self.communicate(response)
 
     def cal_info(self, option):
-        super().__init__(voice = self.voice)
         x = datetime.now()
         cal_dic = {'hour': x.strftime("%I"), 'minute':x.strftime("%M"), 'time_of_day':x.strftime("%p"), 'day':x.strftime("%A"),'month': x.strftime("%B"), 'year':x.year}
         if option == 'time':
@@ -138,6 +134,26 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
             response = f"The year is {cal_dic['year']}."
         logger.info(f"AI Response: {response}")
         self.communicate(response)
+    
+    def browser(self, option):
+        if option == 'google':
+            wb.open('http://www.google.com', new=2)
+            response = "Opening Google"
+        elif option == 'youtube':
+            wb.open('http://www.youtube.com', new=2)
+            response = "Opening Youtube"
+        elif option == 'gmail':
+            wb.open('http://www.gmail.com', new=2)
+            response = "Opening Gmail"
+        elif option == 'amazon':
+            wb.open('http://www.amazon.com', new=2)
+            response = "Opening Amazon"
+        elif option == 'netflix':
+            wb.open('http://www.netflix.com', new=2)
+            response = "Opening Netflix"
+        logger.info(f"AI Response: {response}")
+        self.communicate(response)
+
 
 if __name__ == "__main__":
     #Setting up logging
@@ -193,6 +209,21 @@ if __name__ == "__main__":
             continue
         elif 'year' in command:
             ai_obj.cal_info(option='year')
+            continue
+        elif 'google' in command:
+            ai_obj.browser(option = 'google')
+            continue
+        elif 'youtube' in command:
+            ai_obj.browser(option = 'youtube')
+            continue
+        elif 'gmail' in command:
+            ai_obj.browser(option = 'gmail')
+            continue
+        elif 'amazon' in command:
+            ai_obj.browser(option = 'amazon')
+            continue
+        elif 'netflix' in command:
+            ai_obj.browser(option = 'netflix')
             continue
         elif 'none' in command:
             continue
