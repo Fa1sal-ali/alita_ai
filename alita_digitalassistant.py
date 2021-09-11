@@ -1,7 +1,7 @@
 # Author: Faisal Ali
 # Creation Date: 7th Aug 2021
-# Version: 0.0.7
-# Revision Date: 4th Sep 2021
+# Version: 0.0.8
+# Revision Date: 11th Sep 2021
 
 # Importing libraries
 import pyttsx3 as tts
@@ -10,6 +10,7 @@ from datetime import datetime
 import random
 import logging
 import webbrowser as wb
+import wikipedia as wp
 
 class AlitaTextToSpeech:
     def __init__(self, speed = 190, voice = "Female"):
@@ -148,12 +149,24 @@ class AlitaActions(AlitaSpeechRecog, AlitaTextToSpeech):
         elif option == 'amazon':
             wb.open('http://www.amazon.com', new=2)
             response = "Opening Amazon"
+        elif option == 'prime video':
+            wb.open('https://www.primevideo.com/', new=2)
+            response = "Opening Amazon"
+        elif option == 'amazon music':
+            wb.open('https://music.amazon.in/', new=2)
+            response = "Opening Amazon"
         elif option == 'netflix':
             wb.open('http://www.netflix.com', new=2)
             response = "Opening Netflix"
         logger.info(f"AI Response: {response}")
         self.communicate(response)
-
+    
+    def wikisearch(self, query):
+        query = query.replace("search", "")
+        logger.info(f"AI Response: Searching {query}")
+        result = wp.summary(query, sentences=2)
+        logger.info(f"AI Response: {result}")
+        self.communicate(result)
 
 if __name__ == "__main__":
     #Setting up logging
@@ -224,6 +237,9 @@ if __name__ == "__main__":
             continue
         elif 'netflix' in command:
             ai_obj.browser(option = 'netflix')
+            continue
+        elif 'search' in command:
+            ai_obj.wikisearch(query = command)
             continue
         elif 'none' in command:
             continue
